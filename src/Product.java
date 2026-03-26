@@ -2,10 +2,11 @@ public class Product {
     private String name, description;
     private int price, quantity;
 
-    Product(String name, int price, String description) {
+    Product(String name, int price, String description, int quantity) {
         this.name = name;
         this.price = price;
         this.description = description;
+        this.quantity = quantity;
     }
 
     public String getName() {
