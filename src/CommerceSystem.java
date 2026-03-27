@@ -13,9 +13,11 @@ public class CommerceSystem {
         int select;
         Category category;
         while (true) {
-            // 카테고리 출력
+            // 카테고리 출력, 장바구니에 물건이 담겨있을 시 추가 메뉴 출력
             IOHandler.printMainMenu(categories, !cart.getCart().isEmpty());
-            int size = categories.size();
+            int size = categories.size() + 1; // admin 메뉴 고려
+
+            // 장바구니에 물건이 있을 시 추가 메뉴를 고려
             if (!cart.getCart().isEmpty()) {
                 size += 2;
             }
@@ -28,15 +30,23 @@ public class CommerceSystem {
                 return;
             }
 
-
-            // 장바구니 확인
-            else if (select == categories.size() + 1) cart.showCart();
-
-            // 장바구니 비우기
-            else if (select == categories.size() + 2) cart.deleteCart();
+            // 장바구니에 물건이 있을 시 추가 메뉴 고려
+            if (!cart.getCart().isEmpty()) {
+                if (select == categories.size() + 1) { // 장바구니 확인
+                    cart.showCart();
+                } else if (select == categories.size() + 2) { // 주문 취소
+                    cart.deleteCart();
+                } else if (select == categories.size() + 3) { // 관리자 모드
+                    IOHandler.inputPassword();
+                }
+            } else {
+                if (select == categories.size() + 1) // 관리자 모드
+                    IOHandler.inputPassword();
+            }
 
             // 세부 카테고리로 이동
-            else {
+            System.out.println(categories.size());
+            if (select <= categories.size()) {
                 category = categories.get(select - 1);
                 IOHandler.printCategoryProduct(category);
 

@@ -9,8 +9,9 @@ public class IOHandler {
         while (true) {
             try {
                 select = sc.nextInt();
-                if (select >= 0 && select <= size)
+                if (select >= 0 && select <= size) {
                     return select;
+                }
                 // 범위 밖의 숫자 예외 처리
                 System.out.println("목록 범위 내의 숫자를 입력해주세요.");
             } catch (Exception e) {
@@ -20,15 +21,25 @@ public class IOHandler {
         }
     }
 
+    public static String inputPassword() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("관리자 비밀번호를 입력해주세요:");
+        String password = sc.next();
+        return password;
+    }
+
     public static void printMainMenu(List<Category> categories, boolean cartState) {
         System.out.println("[ 실시간 커머스 플랫폼 메인 ]");
         for (int i = 0; i < categories.size(); i++)
             System.out.println((i + 1) + ". " + categories.get(i).getCategory());
         System.out.println("0. 종료\t| 프로그램 종료");
         if (cartState) {
+            System.out.println((categories.size() + 3) + ". 관리자 모드");
             System.out.println("\n[ 주문 관리 ]");
             System.out.println((categories.size() + 1) + ". 장바구니 확인\t\t 장바구니를 확인 후 주문합니다.");
             System.out.println((categories.size() + 2) + ". 주문 취소\t\t\t 진행 중인 주문을 취소합니다.");
+        } else {
+            System.out.println((categories.size() + 1) + ". 관리자 모드");
         }
     }
 
