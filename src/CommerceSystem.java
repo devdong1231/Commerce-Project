@@ -10,9 +10,8 @@ public class CommerceSystem {
 
     public void start() {
         Cart cart = new Cart();
-        int select = 0;
-        Category category = null;
-        Product product = null;
+        int select;
+        Category category;
         while (true) {
             // 카테고리 출력
             IOHandler.printMainMenu(categories, !cart.getCart().isEmpty());
@@ -43,7 +42,6 @@ public class CommerceSystem {
 
                 // 메뉴 입력
                 select = IOHandler.inputNumber(category.getProductList().size());
-                if (select != 0) product = category.getProductList().get(select - 1);
 
                 // 입력값 처리
                 if (select == 0) {

@@ -41,26 +41,28 @@ public class IOHandler {
 
     }
 
-    public static void printOrder(List<Product> cart, int totalPrice) {
+    public static void printOrder(List<CartItem> cart, int totalPrice) {
         System.out.println("\n아래와 같이 주문하시겠습니까?\n");
         System.out.println("[ 장바구니 내역 ]");
-        for (Product product : cart) {
+        for (CartItem product : cart) {
             System.out.printf("%s | %,d원 | %s | 수량: %d개\n",
-                    product.getName(),
-                    product.getPrice(),
-                    product.getDescription(),
-                    product.getQuantity());
+                    product.getItemName(),
+                    product.getItemPrice(),
+                    product.getItemDescription(),
+                    product.getItemAmount());
         }
         System.out.println("\n[ 총 주문 금액 ]\n" + String.format("%,d", totalPrice) + "원");
         System.out.println("\n1. 주문 확정 \t\t 2. 메인으로 돌아가기");
     }
 
-    // TODO - 출력이 아닌 문장 다른 곳으로 옮기기
-    public static void printOrderComplete(List<Product> cart, int totalPrice) {
+    public static void printOrderComplete(List<CartItem> cart, int totalPrice) {
         System.out.println("주문이 완료되었습니다!  총 금액: " + String.format("%,d", totalPrice) + "원");
-        for (Product product : cart) {
-            System.out.printf("%s 재고가 %d개 -> %d개로 업데이트 되었습니다.\n", product.getName(), product.getQuantity(), product.getQuantity() - 1);
-            product.setQuantity(product.getQuantity() - 1);
+        for (CartItem product : cart) {
+            System.out.printf("%s 재고가 %d개 -> %d개로 업데이트 되었습니다.\n",
+                    product.getItemName(),
+                    product.getItem().getQuantity(),
+                    product.getItem().getQuantity() - product.getItemAmount()
+            );
         }
     }
 
