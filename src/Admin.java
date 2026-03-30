@@ -52,7 +52,7 @@ public class Admin {
     }
 
     public void createProduct() {
-        IOHandler.printCreateProductMenu(categories);
+        IOHandler.printCategoryList(categories, "어느 카테고리에 상품을 추가하시겠습니까?");
 
         int categorySelect = IOHandler.inputMenu(0, categories.size() + 1);
         if (categorySelect != 0) {

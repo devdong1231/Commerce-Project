@@ -94,21 +94,34 @@ public class IOHandler {
         System.out.println("0. 메인으로 돌아가기");
     }
 
-    public static void printCreateProductMenu(List<Category> categories) {
-        System.out.println("어느 카테고리에 상품을 추가하시겠습니까?");
+    public static void printCategoryList(List<Category> categories, String message) {
+        System.out.println(message);
         for (int i = 0; i < categories.size(); i++) {
             System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
         }
         System.out.println("0. 뒤로가기");
     }
 
-    public static void printCategoryProduct(Category category) {
-        System.out.println("[ " + category.getCategoryName() + " 카테고리 ]");
-        for (int i = 0; i < category.getProductList().size(); i++) {
-            System.out.println((i + 1) + ". " + category.getProductList().get(i).getName() + "\t" + "| " + String.format("%,10d", category.getProductList().get(i).getPrice()) + "원 | " + category.getProductList().get(i).getDescription());
+    public static void printProductList(List<Product> category, String message) {
+        System.out.println(message);
+        for (int i = 0; i < category.size(); i++) {
+            System.out.printf("%d. %s\t%,10d원 | %s | 재고: %d개\n",
+                    i + 1,
+                    category.get(i).getName(),
+                    category.get(i).getPrice(),
+                    category.get(i).getDescription(),
+                    category.get(i).getQuantity()
+            );
         }
         System.out.println("0. 뒤로가기");
+    }
 
+    public static void printCategoryFilter(Category category) {
+        System.out.printf("[ %s 카테고리 ]\n", category.getCategoryName());
+        System.out.println("1. 전체 상품 보기");
+        System.out.println("2. 가격대별 필터링 (100만원 이하)");
+        System.out.println("3. 가격대별 필터링 (100만원 초과)");
+        System.out.println("0. 뒤로가기");
     }
 
     public static void printOrder(List<CartItem> cart, int totalPrice) {
@@ -137,11 +150,11 @@ public class IOHandler {
     }
 
 
-    public static void printCurrentProduct(Product product){
+    public static void printCurrentProduct(Product product) {
         System.out.printf("\"%s | %,d원 | %s\"\n", product.getName(), product.getPrice(), product.getDescription());
     }
 
-    public static void printConfirmMessage(String message){
+    public static void printConfirmMessage(String message) {
         System.out.println(message);
         System.out.println("1. 확인\t\t2. 취소");
     }

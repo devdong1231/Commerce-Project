@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommerceSystem {
     private List<Category> categories;
@@ -55,17 +56,37 @@ public class CommerceSystem {
 
     private void subMenu(int mainMenuChoice, Cart cart) {
         Category category = categories.get(mainMenuChoice - 1);
-        IOHandler.printCategoryProduct(category);
+        List<Product> productList;
+        IOHandler.printCategoryFilter(category);
+        int productChoice;
+        int filterSelect = IOHandler.inputMenu(0, 3);
+        if (filterSelect == 1) {
+            String message = "[ " + category.getCategoryName() + " 카테고리 ]";
+            IOHandler.printProductList(category.getProductList(), message);
+            productList = category.getProductList();
+        } else if (filterSelect == 2) {
+            String message = "[ 100만원 이하 상품 목록 ]";
+            productList = category.getProductList().stream()
+                    .filter(product -> product.getPrice() <= 1000000)
+                    .toList();
+            IOHandler.printProductList(productList, message);
 
+
+        } else if (filterSelect == 3) {
+            String message = "[ 100만원 초과 상품 목록 ]";
+            productList = category.getProductList().stream()
+                    .filter(product -> product.getPrice() > 1000000)
+                    .toList();
+            IOHandler.printProductList(productList, message);
+        } else {
+            return;
+        }
         //메뉴 입력
-        int productChoice = IOHandler.inputMenu(0, category.getProductList().size());
+        productChoice = IOHandler.inputMenu(0, productList.size());
+        if (productChoice != 0)
+            cart.addCart(productList.get(productChoice - 1));
 
-        if (productChoice == 0)
-            System.out.println("뒤로가기");
-        else
-            cart.addCart(category.getProductList().get(productChoice - 1));
     }
-
 
     public List<Category> getCategories() {
         return categories;
