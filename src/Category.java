@@ -10,11 +10,11 @@ public class Category { //
         productList = new ArrayList<>();
     }
 
-    public String getCategory() {
+    public String getCategoryName() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategoryName(String category) {
         this.category = category;
     }
 
@@ -24,6 +24,10 @@ public class Category { //
 
     public void addProduct(String name, int price, String description, int quantity) {
         productList.add(new Product(name, price, description, quantity));
+    }
+
+    public void addProduct(Product product) {
+        productList.add(product);
     }
 
 

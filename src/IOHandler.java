@@ -2,14 +2,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class IOHandler {
+    public static final Scanner sc = new Scanner(System.in);
+
     // 0 ~ size 범위의 값 입력
     public static int inputNumber(int size) {
-        Scanner sc = new Scanner(System.in);
         int select;
         while (true) {
             try {
                 select = sc.nextInt();
                 if (select >= 0 && select <= size) {
+                    sc.nextLine();
                     return select;
                 }
                 // 범위 밖의 숫자 예외 처리
@@ -21,17 +23,72 @@ public class IOHandler {
         }
     }
 
-    public static String inputPassword() {
-        Scanner sc = new Scanner(System.in);
+    // 로그인 성공시 true 실패시 false
+    public static boolean inputPassword(String password) {
         System.out.println("관리자 비밀번호를 입력해주세요:");
-        String password = sc.next();
-        return password;
+        int chance = 3;
+        while (chance > 0) {
+            String inputPassword = sc.next();
+            if (inputPassword.equals(password))
+                return true;
+            else {
+                System.out.println("비밀번호가 틀렸습니다. 남은 시도 횟수: " + --chance + "회");
+            }
+        }
+        return false;
+    }
+
+    public static Product inputAddProduct(List<Product> productList) {
+        System.out.println("[ 전자제품 카테고리에 상품 추가 ]");
+        String name;
+        while (true) {
+            boolean isExist = false;
+            System.out.print("상품명을 입력해주세요: ");
+            name = sc.nextLine().trim();
+            for (Product product : productList) {
+                if (product.getName().trim().equals(name)) {
+                    isExist = true;
+                    System.out.println("해당 상품은 이미 존재합니다!");
+                }
+            }
+            if (!isExist)
+                break;
+        }
+
+        int price;
+        while (true) {
+            try {
+                System.out.print("가격을 입력해주세요: ");
+                price = sc.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("숫자를 입력해주세요");
+                sc.nextLine();
+            }
+        }
+        System.out.print("상품 설명을 입력해주세요: ");
+        String description = sc.next();
+        int quantity;
+        while (true) {
+            try {
+                System.out.print("재고 수량을 입력해주세요: ");
+                quantity = sc.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("숫자를 입력해주세요");
+                sc.nextLine();
+            }
+        }
+        System.out.printf("\n%s | %,d원 | %s | 재고: %d개\n", name, price, description, quantity);
+        System.out.println("위 정보로 상품을 추가하시겠습니까?");
+        System.out.println("1. 확인\t\t2. 취소");
+        return new Product(name, price, description, quantity);
     }
 
     public static void printMainMenu(List<Category> categories, boolean cartState) {
         System.out.println("[ 실시간 커머스 플랫폼 메인 ]");
         for (int i = 0; i < categories.size(); i++)
-            System.out.println((i + 1) + ". " + categories.get(i).getCategory());
+            System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
         System.out.println("0. 종료\t| 프로그램 종료");
         if (cartState) {
             System.out.println((categories.size() + 3) + ". 관리자 모드");
@@ -43,8 +100,28 @@ public class IOHandler {
         }
     }
 
+    public static void printAdminMenu() {
+        System.out.println("1. 상품 추가");
+        System.out.println("2. 상품 수정");
+        System.out.println("3. 상품 삭제");
+        System.out.println("4. 전체 상품 현황");
+        System.out.println("0. 메인으로 돌아가기");
+    }
+
+    public static void printAddProductMenu(List<Category> categories) {
+        System.out.println("어느 카테고리에 상품을 추가하시겠습니까?");
+        for (int i = 0; i < categories.size(); i++) {
+            System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
+        }
+        System.out.println("0. 뒤로가기");
+    }
+
+    public static void printModifyProduct() {
+
+    }
+
     public static void printCategoryProduct(Category category) {
-        System.out.println("[ " + category.getCategory() + " 카테고리 ]");
+        System.out.println("[ " + category.getCategoryName() + " 카테고리 ]");
         for (int i = 0; i < category.getProductList().size(); i++) {
             System.out.println((i + 1) + ". " + category.getProductList().get(i).getName() + "\t" + "| " + String.format("%,10d", category.getProductList().get(i).getPrice()) + "원 | " + category.getProductList().get(i).getDescription());
         }
