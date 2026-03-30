@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        CommerceSystem commerceSystem = new CommerceSystem();
+        CommerceSystem commerceSystem = new CommerceSystem("asdf");
         Category electronic = new Category("전자제품");
         electronic.addProduct("Galaxy S24", 1200000, "최신 안드로이드 스마트폰", 1);
         electronic.addProduct("iPhone 15", 1350000, "Apple의 최신 스마트폰", 30);
