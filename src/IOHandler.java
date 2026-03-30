@@ -6,13 +6,13 @@ public class IOHandler {
 
     // 0 ~ size 범위의 값 입력
     public static int inputMenu(int min, int max) {
-        int select;
+        int menuSelect;
         while (true) {
             try {
-                select = sc.nextInt();
-                if (select >= min && select <= max) {
-                    sc.nextLine();
-                    return select;
+                menuSelect = sc.nextInt();
+                sc.nextLine(); // 버퍼 비우기
+                if (menuSelect >= min && menuSelect <= max) {
+                    return menuSelect;
                 }
                 // 범위 밖의 숫자 예외 처리
                 System.out.println("목록 범위 내의 숫자를 입력해주세요.");
@@ -23,49 +23,25 @@ public class IOHandler {
         }
     }
 
-    // 로그인 성공시 true 실패시 false
-    public static String inputPassword() {
-        return sc.next().trim();
+    public static String inputString(String message) {
+        if (!message.isEmpty())
+            System.out.print(message);
+        return sc.nextLine().trim();
     }
 
-    public static Product inputCreateProduct(List<Product> productList) {
-        System.out.println("[ 전자제품 카테고리에 상품 추가 ]");
-        String productName = inputProductName(productList);
-        int productPrice = inputProductPrice();
-        String productDescription = inputProductDescription();
-        int productQuantity = inputProductQuantity();
-
-        System.out.printf("\n%s | %,d원 | %s | 재고: %d개\n", productName, productPrice, productDescription, productQuantity);
-        System.out.println("위 정보로 상품을 추가하시겠습니까?");
-        System.out.println("1. 확인\t\t2. 취소");
-        return new Product(productName, productPrice, productDescription, productQuantity);
-    }
-
-    private static String inputProductName(List<Product> productList) {
-        String productName;
-        boolean isExist;
-        do {
-            isExist = false;
-            System.out.print("상품명을 입력해주세요: ");
-            productName = sc.next().trim();
-            for (Product product : productList) {
-                if (product.getName().trim().equals(productName)) {
-                    isExist = true;
-                    System.out.println("해당 상품은 이미 존재합니다!");
-                }
-            }
-        } while (isExist);
-        return productName;
-    }
-
-    private static int inputProductPrice() {
-        int productPrice;
+    public static int inputNumber(String message) {
+        int number;
         while (true) {
             try {
-                productPrice = sc.nextInt();
-                if (productPrice < 1) {
+                if (!message.isEmpty()) // 입력 직전 메시지
+                    System.out.print(message);
+                number = sc.nextInt();
+                if (number < 1) {
                     throw new Exception();
-                } else return productPrice;
+                } else {
+                    sc.nextLine();
+                    return number;
+                }
             } catch (Exception e) {
                 System.out.println("1 이상의 정수를 입력해주세요.");
                 sc.nextLine();
@@ -73,54 +49,25 @@ public class IOHandler {
         }
     }
 
-    private static String inputProductDescription() {
-        return sc.next().trim();
-    }
-
-    private static int inputProductQuantity() {
-        int productQuantity;
-        while (true) {
-            try {
-                System.out.print("재고 수량을 입력해주세요: ");
-                productQuantity = sc.nextInt();
-                if (productQuantity < 1) {
-                    throw new Exception();
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println("1이상의 정수를 입력해주세요");
-                sc.nextLine();
-            }
-        }
-        return productQuantity;
-    }
-
-    public static String inputUpdateProductName() {
-        return sc.nextLine();
-    }
-
     public static int inputUpdateProductPrice(Product product) {
         System.out.printf("현재 가격: %,d원\n", product.getPrice());
-        System.out.print("새로운 가격을 입력해주세요: ");
-        int newPrice = IOHandler.inputProductPrice();
-        System.out.printf("%s의 가격이 %,d원 -> %,d원으로 수정되었습니다.", product.getName(), product.getPrice(), newPrice);
+        int newPrice = IOHandler.inputNumber("새로운 가격을 입력해주세요: ");
+        System.out.printf("%s의 가격이 %,d원 -> %,d원으로 수정되었습니다.\n", product.getName(), product.getPrice(), newPrice);
         return newPrice;
     }
 
-    public static String inputUpdateProductDescription(Product product){
+    public static String inputUpdateProductDescription(Product product) {
         System.out.printf("현재 설명: %s\n", product.getPrice());
-        System.out.print("새로운 설명을 입력해주세요: ");
-        String newDescription = IOHandler.inputProductDescription();
-        System.out.printf("%s의 설명이 %s로 수정되었습니다.", product.getName(), product.getDescription());
+        String newDescription = inputString("새로운 설명을 입력해주세요: ");
+        System.out.printf("%s의 설명이 %s로 수정되었습니다.\n", product.getName(), product.getDescription());
         return newDescription;
 
     }
 
-    public static int inputUpdateProductQuantity(Product product){
+    public static int inputUpdateProductQuantity(Product product) {
         System.out.printf("현재 재고 수량: %,d원\n", product.getQuantity());
-        System.out.print("새로운 재고 수량을 입력해주세요: ");
-        int newQuantity = IOHandler.inputProductPrice();
-        System.out.printf("%s의 재고 수량이 %,d개 -> %,d개로 수정되었습니다.", product.getName(), product.getQuantity(), newQuantity);
+        int newQuantity = inputNumber("새로운 재고 수량을 입력해주세요: ");
+        System.out.printf("%s의 재고 수량이 %,d개 -> %,d개로 수정되었습니다.\n", product.getName(), product.getQuantity(), newQuantity);
         return newQuantity;
     }
 
@@ -189,9 +136,14 @@ public class IOHandler {
         }
     }
 
-    public static void printAddCart(Product product) {
+
+    public static void printCurrentProduct(Product product){
         System.out.printf("\"%s | %,d원 | %s\"\n", product.getName(), product.getPrice(), product.getDescription());
-        System.out.println("위 상품을 장바구니에 추가하시겠습니까?");
+    }
+
+    public static void printConfirmMessage(String message){
+        System.out.println(message);
         System.out.println("1. 확인\t\t2. 취소");
     }
+
 }

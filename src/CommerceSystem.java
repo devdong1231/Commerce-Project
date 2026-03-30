@@ -4,20 +4,17 @@ import java.util.List;
 public class CommerceSystem {
     private List<Category> categories;
     private Admin admin;
+    private Cart cart;
 
     CommerceSystem(String password) {
         categories = new ArrayList<>();
-        admin = new Admin(password, categories);
+        cart = new Cart();
+        admin = new Admin(password, categories, cart);
     }
 
     public void start() {
-        Cart cart = new Cart();
         while (true) {
-            Category category;
-            boolean isAdmin = false;
-
             int menuChoice = mainMenu(cart);
-
             // 0번 선택
             if (menuChoice == 0) {
                 System.out.println("커머스 플랫폼을 종료합니다.");

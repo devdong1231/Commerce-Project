@@ -11,7 +11,9 @@ public class Cart {
     }
 
     public void addCart(Product product) {
-        IOHandler.printAddCart(product);
+        IOHandler.printCurrentProduct(product);
+        IOHandler.printConfirmMessage("위 상품을 장바구니에 추가하시겠습니까?");
+
         int input = IOHandler.inputMenu(1, 2);
 
         // 1.예  2. 취소
