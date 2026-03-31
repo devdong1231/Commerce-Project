@@ -2,16 +2,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Category { //
-    private String category;
+    private String categoryName;
     private List<Product> productList;
 
     Category(String category) {
-        this.category = category;
+        this.categoryName = category;
         productList = new ArrayList<>();
     }
 
     public String getCategoryName() {
-        return category;
+        return categoryName;
     }
 
     public List<Product> getProductList() {

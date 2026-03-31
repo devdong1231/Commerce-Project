@@ -64,11 +64,10 @@ public class IOHandler {
     }
 
     public static String inputUpdateDescription(Product product) {
-        System.out.printf("현재 설명: %s\n", product.getPrice());
+        System.out.printf("현재 설명: %s\n", product.getDescription());
         String newDescription = inputString("새로운 설명을 입력해주세요: ");
-        System.out.printf("%s의 설명이 %s로 수정되었습니다.\n", product.getName(), product.getDescription());
+        System.out.printf("%s의 설명이 %s로 수정되었습니다.\n", product.getName(), newDescription);
         return newDescription;
-
     }
 
     public static int inputUpdateQuantity(Product product) {
@@ -79,6 +78,7 @@ public class IOHandler {
     }
 
     public static void printMainMenu(List<Category> categories, boolean cartState) {
+        System.out.println("-------------------------");
         System.out.println("[ 실시간 커머스 플랫폼 메인 ]");
         for (int i = 0; i < categories.size(); i++)
             System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
@@ -88,22 +88,22 @@ public class IOHandler {
             System.out.println("\n[ 주문 관리 ]");
             System.out.println((categories.size() + 1) + ". 장바구니 확인\t\t 장바구니를 확인 후 주문합니다.");
             System.out.println((categories.size() + 2) + ". 주문 취소\t\t\t 진행 중인 주문을 취소합니다.");
-            System.out.println("-------------------------");
-        } else {
+        } else
             System.out.println((categories.size() + 1) + ". 관리자 모드");
-            System.out.println("-------------------------");
-        }
+        System.out.println("-------------------------");
     }
 
     public static void printAdminMenu() {
+        System.out.println("-------------------------");
+        System.out.println("[ 관리자 모드 ]");
         System.out.println("1. 상품 추가");
         System.out.println("2. 상품 수정");
         System.out.println("3. 상품 삭제");
         System.out.println("4. 전체 상품 현황");
         System.out.println("0. 메인으로 돌아가기");
+        System.out.println("-------------------------");
     }
 
-    // 카테고리 목록 출력
     public static void printCategoryList(List<Category> categories, String message) {
         if (!message.isEmpty())
             System.out.println(message);
@@ -114,7 +114,9 @@ public class IOHandler {
     }
 
     public static void printProductList(List<Product> category, String message) {
-        System.out.println(message);
+        System.out.println("-------------------------");
+        if (!message.isEmpty())
+            System.out.println(message);
         IntStream.range(0, category.size()).forEach(i -> {
             System.out.printf("%d. %s\t%,10d원 | %20s | 재고: %d개\n",
                     i + 1,
@@ -124,8 +126,8 @@ public class IOHandler {
                     category.get(i).getQuantity()
             );
         });
-
         System.out.println("0. 뒤로가기");
+        System.out.println("-------------------------");
     }
 
     public static void printCategoryFilter(Category category) {
@@ -153,7 +155,6 @@ public class IOHandler {
                             product.getItemAmount()
                     );
                 });
-
     }
 
     public static void printOrderConfirm(int totalPrice) {
@@ -176,14 +177,15 @@ public class IOHandler {
         }
     }
 
-
     public static void printCurrentProduct(Product product) {
-        System.out.printf("\"%s | %,d원 | %s\"\n", product.getName(), product.getPrice(), product.getDescription());
+        System.out.printf("\"%s | %,d원 | %s | 재고: %d개\"\n", product.getName(), product.getPrice(), product.getDescription(), product.getQuantity());
     }
 
     public static void printConfirmMessage(String message) {
+        System.out.println("-------------------------");
         System.out.println(message);
         System.out.println("1. 확인\t\t2. 취소");
+        System.out.println("-------------------------");
     }
 
     public static void printGradeMenu() {

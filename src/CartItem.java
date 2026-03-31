@@ -27,7 +27,6 @@ public class CartItem {
         return amount;
     }
 
-
     public void changeItemAmount(int amount) {
         this.amount += amount;
     }

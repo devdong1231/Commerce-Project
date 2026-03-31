@@ -16,27 +16,18 @@ public class Admin {
             IOHandler.printAdminMenu();
             int menuSelect = IOHandler.inputMenu(0, 4);
             switch (menuSelect) {
-                case 0:
-                    return;
-                case 1:
-                    createProduct();
-                    break;
-                case 2:
-                    updateProduct();
-                    break;
-                case 3:
-                    deleteProduct();
-                    break;
-                case 4:
-                    findAllProduct();
-                    break;
+                case 0: return;
+                case 1: createProduct();break;
+                case 2: updateProduct();break;
+                case 3: deleteProduct();break;
+                case 4: findAllProduct();break;
             }
         }
-
     }
 
     public void validPassword() {
         int chance = 3;
+        System.out.println("-------------------------");
         System.out.println("관리자 비밀번호를 입력해주세요");
         while (chance > 0) {
             String password = IOHandler.inputString("비밀번호 입력: ");
@@ -81,6 +72,7 @@ public class Admin {
     }
 
     private void updateProduct() {
+        System.out.println("-------------------------");
         Product product = inputExistingProduct("수정할 상품명을 입력해주세요: ");
 
         System.out.println("수정할 항목을 선택해주세요:\n");
@@ -122,14 +114,12 @@ public class Admin {
 
     }
 
-    public void findAllProduct() {
+    private void findAllProduct() {
         IOHandler.printCategoryList(categories, "");
         int categorySelect = IOHandler.inputMenu(0, categories.size());
         if (categorySelect != 0) {
             IOHandler.printProductList(categories.get(categorySelect - 1).getProductList(), "");
-            System.out.println("-------------------------");
         }
-
     }
 
     private boolean isProductExists(String productName) {

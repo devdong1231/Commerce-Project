@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -13,8 +11,8 @@ public class Main {
         commerceSystem.addCategory(new Category("의류"));
         commerceSystem.addCategory(new Category("식품"));
 
-        commerceSystem.start();
 
+        commerceSystem.start();
         IOHandler.closeScanner();
     }
 }

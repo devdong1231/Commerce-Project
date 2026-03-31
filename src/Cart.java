@@ -48,7 +48,7 @@ public class Cart {
     }
 
 
-    public void showCart() {
+    public void orderCart() {
         IOHandler.printOrder(cart, "아래와 같이 주문하시겠습니까?");
         IOHandler.printOrderConfirm(totalPrice);
         int input = IOHandler.inputMenu(1, 2);
@@ -84,8 +84,9 @@ public class Cart {
     }
 
     public void deleteWholeCart() {
-        while (!cart.isEmpty())
-            cart.removeLast();
+        while (!cart.isEmpty()){
+            cart.remove(cart.size()-1);
+        }
         totalPrice = 0;
     }
 

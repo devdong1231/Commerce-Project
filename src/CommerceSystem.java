@@ -23,7 +23,7 @@ public class CommerceSystem {
             if (menuChoice > categories.size()) { // 추가 메뉴 고려
                 if (!cart.getCart().isEmpty()) { // 장바구니에 상품이 있을 때
                     if (menuChoice == categories.size() + 1) { // 장바구니 확인
-                        cart.showCart();
+                        cart.orderCart();
                     } else if (menuChoice == categories.size() + 2) { // 주문 취소
                         cart.deleteCart();
                     } else if (menuChoice == categories.size() + 3) { // 관리자 모드
@@ -55,27 +55,28 @@ public class CommerceSystem {
         IOHandler.printCategoryFilter(category);
         int productChoice;
         int filterSelect = IOHandler.inputMenu(0, 3);
+        String message;
         if (filterSelect == 1) {
-            String message = "[ " + category.getCategoryName() + " 카테고리 ]";
-            IOHandler.printProductList(category.getProductList(), message);
+            message = "[ " + category.getCategoryName() + " 카테고리 ]";
             productList = category.getProductList();
-        } else if (filterSelect == 2) {
-            String message = "[ 100만원 이하 상품 목록 ]";
+        }
+
+        else if (filterSelect == 2) {
+            message = "[ 100만원 이하 상품 목록 ]";
             productList = category.getProductList().stream()
                     .filter(product -> product.getPrice() <= 1000000)
                     .toList();
-            IOHandler.printProductList(productList, message);
+        }
 
-
-        } else if (filterSelect == 3) {
-            String message = "[ 100만원 초과 상품 목록 ]";
+        else if (filterSelect == 3) {
+            message = "[ 100만원 초과 상품 목록 ]";
             productList = category.getProductList().stream()
                     .filter(product -> product.getPrice() > 1000000)
                     .toList();
-            IOHandler.printProductList(productList, message);
-        } else {
-            return;
         }
+        else
+            return;
+        IOHandler.printProductList(productList, message);
 
         //메뉴 입력
         productChoice = IOHandler.inputMenu(0, productList.size());
@@ -83,7 +84,6 @@ public class CommerceSystem {
             cart.addCart(productList.get(productChoice - 1));
 
     }
-
 
     public void addCategory(Category category) {
         categories.add(category);
