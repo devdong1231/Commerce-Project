@@ -15,5 +15,6 @@ public class Main {
 
         commerceSystem.start();
 
+        IOHandler.closeScanner();
     }
 }

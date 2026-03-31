@@ -10,7 +10,7 @@ public class CartItem {
     public Product getItem() {
         return product;
     }
-
+    
     public String getItemName() {
         return product.getName();
     }

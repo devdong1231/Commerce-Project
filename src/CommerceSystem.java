@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommerceSystem {
     private List<Category> categories;
@@ -16,15 +15,13 @@ public class CommerceSystem {
     public void start() {
         while (true) {
             int menuChoice = mainMenu(cart);
-            // 0번 선택
-            if (menuChoice == 0) {
+            if (menuChoice == 0) { // 0번 선택
                 System.out.println("커머스 플랫폼을 종료합니다.");
                 return;
             }
 
-            // 추가 메뉴 고려
-            if (menuChoice > categories.size()) {
-                if (!cart.getCart().isEmpty()) {
+            if (menuChoice > categories.size()) { // 추가 메뉴 고려
+                if (!cart.getCart().isEmpty()) { // 장바구니에 상품이 있을 때
                     if (menuChoice == categories.size() + 1) { // 장바구니 확인
                         cart.showCart();
                     } else if (menuChoice == categories.size() + 2) { // 주문 취소
@@ -32,15 +29,13 @@ public class CommerceSystem {
                     } else if (menuChoice == categories.size() + 3) { // 관리자 모드
                         admin.validPassword();
                     }
-                } else {
+                } else { // 장바구니에 상품이 없을 때
                     admin.validPassword();
                 }
-            } else {
-                // 세부 카테고리로 이동
-                subMenu(menuChoice, cart);
             }
 
-
+            else // 카테고리 선택
+                subMenu(menuChoice, cart);
         }
     }
 
@@ -81,15 +76,12 @@ public class CommerceSystem {
         } else {
             return;
         }
+
         //메뉴 입력
         productChoice = IOHandler.inputMenu(0, productList.size());
         if (productChoice != 0)
             cart.addCart(productList.get(productChoice - 1));
 
-    }
-
-    public List<Category> getCategories() {
-        return categories;
     }
 
 

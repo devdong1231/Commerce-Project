@@ -1,10 +1,11 @@
 public class Customer {
-    private String name, email, grade;
+    private String name, email;
+    private CustomerGrade grade;
 
     Customer(String name, String email) {
         this.name = name;
         this.email = email;
-        grade = "";
+        grade = CustomerGrade.BRONZE;
     }
 
     public String getName() {
@@ -23,11 +24,11 @@ public class Customer {
         this.email = email;
     }
 
-    public String getGrade(){
+    public CustomerGrade getGrade() {
         return grade;
     }
 
-    public void setGrade(String grade){
+    public void setGrade(CustomerGrade grade) {
         this.grade = grade;
     }
 

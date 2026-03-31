@@ -14,10 +14,6 @@ public class Category { //
         return category;
     }
 
-    public void setCategoryName(String category) {
-        this.category = category;
-    }
-
     public List<Product> getProductList() {
         return productList;
     }
