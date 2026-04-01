@@ -51,7 +51,7 @@
    - description : 상품 설명
    - quantity : 상품 재고 개수
 
-### Cumstomer.java
+### Customer.java
  - 고객 정보를 가지는 클래스
    - customerName : 고객 이름
    - email : 고객 이메일
@@ -61,3 +61,11 @@
  - 입출력을 관리하는 클래스
    - static으로 Scanner 객체를 하나만 생성해서 사용
    - 프로그램 종료 시 closeScanner()로 sc.close() 호출
+
+### MenuCommand.java
+ - 메뉴 실행을 정의하는 인터페이스
+
+### MenuItem.java
+ - 메뉴 이름과 execute()를 갖고 있는 클래스
+ - menuName : 메뉴 이름
+ - execute(): 메뉴 선택 시 실행될 로직

@@ -14,4 +14,8 @@ public enum CustomerGrade {
     public double getGrade() {
         return grade;
     }
+
+    public int getDiscount(int price) {
+        return (int) (price * grade);
+    }
 }

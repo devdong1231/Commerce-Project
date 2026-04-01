@@ -5,11 +5,6 @@ import java.util.stream.IntStream;
 public class IOHandler {
     public static final Scanner sc = new Scanner(System.in);
 
-    // 프로그램 종료 직전 1회 사용
-    public static void closeScanner() {
-        sc.close();
-    }
-
     // 0 ~ size 범위의 값 입력
     public static int inputMenu(int min, int max) {
         int menuSelect;
@@ -18,9 +13,8 @@ public class IOHandler {
                 System.out.print("메뉴 선택: ");
                 menuSelect = sc.nextInt();
                 sc.nextLine(); // 버퍼 비우기
-                if (menuSelect >= min && menuSelect <= max) {
+                if (menuSelect >= min && menuSelect <= max)
                     return menuSelect;
-                }
                 // 범위 밖의 숫자 예외 처리
                 System.out.println("목록 범위 내의 숫자를 입력해주세요.");
             } catch (Exception e) {
@@ -77,30 +71,41 @@ public class IOHandler {
         return newQuantity;
     }
 
-    public static void printMainMenu(List<Category> categories, boolean cartState) {
+    public static void printMainMenu(List<MenuItem> menu, int categoryCount) {
         System.out.println("-------------------------");
         System.out.println("[ 실시간 커머스 플랫폼 메인 ]");
-        for (int i = 0; i < categories.size(); i++)
-            System.out.println((i + 1) + ". " + categories.get(i).getCategoryName());
-        System.out.println("0. 종료\t| 프로그램 종료");
-        if (cartState) {
-            System.out.println((categories.size() + 3) + ". 관리자 모드");
+        // 카테고리 출력
+        for (int i = 0; i < categoryCount; i++)
+            System.out.println((i + 1) + ". " + menu.get(i).getMenuName());
+        //추가 메뉴 출력 - 장바구니
+        if (menu.size() > categoryCount + 1) {
             System.out.println("\n[ 주문 관리 ]");
-            System.out.println((categories.size() + 1) + ". 장바구니 확인\t\t 장바구니를 확인 후 주문합니다.");
-            System.out.println((categories.size() + 2) + ". 주문 취소\t\t\t 진행 중인 주문을 취소합니다.");
-        } else
-            System.out.println((categories.size() + 1) + ". 관리자 모드");
+            for (int i = categoryCount; i < menu.size(); i++)
+                System.out.printf("%d. %s\n", i + 1, menu.get(i).getMenuName());
+        }
+        // 추가 메뉴 출력 - 관리자 모드
+        else
+            System.out.println(menu.size() + ". " + menu.get(menu.size() - 1).getMenuName());
+        System.out.println("0. 종료\t| 프로그램 종료");
         System.out.println("-------------------------");
     }
 
-    public static void printAdminMenu() {
+    public static void printAdminMenu(List<MenuItem> menu) {
         System.out.println("-------------------------");
         System.out.println("[ 관리자 모드 ]");
-        System.out.println("1. 상품 추가");
-        System.out.println("2. 상품 수정");
-        System.out.println("3. 상품 삭제");
-        System.out.println("4. 전체 상품 현황");
+        for (int i = 0; i < menu.size(); i++) {
+            System.out.println((i + 1) + ". " + menu.get(i).getMenuName());
+        }
         System.out.println("0. 메인으로 돌아가기");
+        System.out.println("-------------------------");
+    }
+
+    public static void printUpdateProductMenu(List<MenuItem> menu) {
+        System.out.println("-------------------------");
+        System.out.println("수정할 항목을 선택해주세요:");
+        for (int i = 0; i < menu.size(); i++) {
+            System.out.printf("%d. %s\n", i + 1, menu.get(i).getMenuName());
+        }
         System.out.println("-------------------------");
     }
 
@@ -130,12 +135,11 @@ public class IOHandler {
         System.out.println("-------------------------");
     }
 
-    public static void printCategoryFilter(Category category) {
+    public static void printCategoryFilter(List<MenuItem> menu, String categoryName) {
         System.out.println("-------------------------");
-        System.out.printf("[ %s 카테고리 ]\n", category.getCategoryName());
-        System.out.println("1. 전체 상품 보기");
-        System.out.println("2. 가격대별 필터링 (100만원 이하)");
-        System.out.println("3. 가격대별 필터링 (100만원 초과)");
+        System.out.printf("[ %s 카테고리 ]\n", categoryName);
+        for (int i = 0; i < menu.size(); i++)
+            System.out.println((i + 1) + ". " + menu.get(i).getMenuName());
         System.out.println("0. 뒤로가기");
         System.out.println("-------------------------");
     }
@@ -165,16 +169,21 @@ public class IOHandler {
     public static void printOrderComplete(List<CartItem> cart, int totalPrice, CustomerGrade grade) {
         System.out.println("주문이 완료되었습니다!");
         System.out.println("할인 전 금액: " + String.format("%,d", totalPrice) + "원");
-        int discount = (int) (totalPrice * grade.getGrade());
-        System.out.printf("%s 등급 할인(%d%%): -%,d원\n", grade, (int) (grade.getGrade() * 100), discount);
-        System.out.println("최종 결제 금액: " + String.format("%,d", totalPrice - discount) + "원");
+        System.out.printf("%s 등급 할인(%d%%): %,d원\n", grade, (int) (grade.getGrade() * 100), grade.getDiscount(totalPrice));
+        System.out.println("최종 결제 금액: " + String.format("%,d", totalPrice - grade.getDiscount(totalPrice)) + "원");
         for (CartItem product : cart) {
             System.out.printf("%s 재고가 %d개 -> %d개로 업데이트 되었습니다.\n",
                     product.getItemName(),
-                    product.getItem().getQuantity(),
-                    product.getItem().getQuantity() - product.getItemAmount()
+                    product.getItem().getQuantity() + product.getItemAmount(),
+                    product.getItem().getQuantity()
             );
         }
+    }
+
+    public static void printDeleteCart(List<MenuItem> menu) {
+        for (int i = 0; i < menu.size(); i++)
+            System.out.printf("%d. %s", i + 1, menu.get(i).getMenuName());
+        System.out.println("0. 뒤로 가기");
     }
 
     public static void printCurrentProduct(Product product) {
@@ -188,12 +197,11 @@ public class IOHandler {
         System.out.println("-------------------------");
     }
 
-    public static void printGradeMenu() {
+    public static void printGradeMenu(List<MenuItem> menu) {
         System.out.println("고객 등급을 입력해주세요.");
         int cnt = 1;
         for (CustomerGrade grade : CustomerGrade.values()) {
             System.out.printf("%d. %-9s: %2d%% 할인\n", cnt++, grade, (int) (grade.getGrade() * 100));
         }
-
     }
 }
